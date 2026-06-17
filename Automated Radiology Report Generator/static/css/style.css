@@ -1,0 +1,67 @@
+/* Custom Styles for NeuroScan AI App */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-card {
+    background: rgba(18, 26, 40, 0.95); 
+    color: #ecf0f1;
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid #198c4d; 
+}
+
+.form-card h2 {
+    color: #198c4d;
+    font-weight: 700;
+}
+
+.card-section {
+    background: rgba(44, 62, 80, 0.8); 
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.section-title {
+    color: #198c4d;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.form-control, .form-select {
+    background-color: rgba(30, 42, 63, 0.9);
+    border: 1px solid #3498db;
+    color: #ecf0f1;
+    transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(30, 42, 63, 1);
+    border-color: #79c5ff;
+    box-shadow: 0 0 10px rgba(121, 197, 255, 0.5);
+    color: #ecf0f1;
+}
+
+.form-control::placeholder {
+    color: rgba(189, 195, 199, 0.5);
+}
+
+.text-warning {
+    color: #f39c12 !important;
+}
+
+.btn-dicom {
+    background: #f39c12;
+}
+
+.btn-dicom:hover {
+    background: #e67e22;
+    box-shadow: 0 0 15px #f39c12;
+}

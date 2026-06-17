@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Radiology Report Generator</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+            /* --- Modern Medical Theme: Peacock Green + Teal Blue --- */
+            body {
+                background: linear-gradient(135deg, #00bfa5 0%, #0097a7 50%, #00695c 100%);
+                min-height: 100vh;
+                margin: 0;
+                padding: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                font-family: "Poppins", sans-serif;
+                color: #1a1a1a;
+                animation: fadeBg 6s infinite alternate ease-in-out;
+            }
+
+            /* Background subtle animation */
+            @keyframes fadeBg {
+                from { background-position: 0% 50%; }
+                to { background-position: 100% 50%; }
+            }
+
+            /* --- Report Container --- */
+            .report-card {
+                background: #ffffffee;
+                color: #1a1a1a;
+                border-radius: 22px;
+                padding: 45px;
+                max-width: 960px;
+                width: 100%;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+                backdrop-filter: blur(12px);
+                border: 2px solid rgba(0, 150, 136, 0.2);
+                animation: fadeIn 1.2s ease;
+            }
+
+            /* --- Title --- */
+            h1 {
+                color: #004d40;
+                border-bottom: 3px solid #00bfa5;
+                padding-bottom: 12px;
+                margin-bottom: 25px;
+                font-weight: 700;
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            /* --- Report Sections --- */
+            .report-section {
+                background: linear-gradient(120deg, #e0f2f1, #e8f5e9);
+                padding: 25px;
+                margin-bottom: 22px;
+                border-radius: 15px;
+                border-left: 6px solid #009688;
+                box-shadow: 0 5px 20px rgba(0, 121, 107, 0.15);
+                transition: 0.3s ease;
+            }
+
+            .report-section:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(0, 150, 136, 0.25);
+            }
+
+            .report-section h5 {
+                color: #00695c;
+                font-weight: 600;
+                margin-bottom: 14px;
+                border-left: 4px solid #00bfa5;
+                padding-left: 10px;
+            }
+
+            .report-section p {
+                margin-bottom: 8px;
+                font-size: 15px;
+                color: #2e2e2e;
+            }
+
+            /* --- MRI Image --- */
+            .mri-image-container {
+                text-align: center;
+            }
+
+            .mri-image-container img {
+                margin: 20px auto;
+                border: 3px solid #00acc1;
+                border-radius: 18px;
+                max-width: 80%;
+                box-shadow: 0 8px 25px rgba(0, 150, 136, 0.4);
+                transition: transform 0.4s ease;
+            }
+
+            .mri-image-container img:hover {
+                transform: scale(1.05);
+            }
+
+            /* --- Tumor Info --- */
+            .tumor-info {
+                background: linear-gradient(135deg, #e0f7fa, #b2dfdb);
+                border-left: 6px solid #00796b;
+                padding: 20px;
+                margin-top: 20px;
+                border-radius: 14px;
+                box-shadow: 0 4px 18px rgba(0, 77, 64, 0.15);
+            }
+
+            .tumor-info h5 {
+                color: #004d40;
+                font-weight: 600;
+            }
+
+            .tumor-info p {
+                color: #00332c;
+            }
+
+            /* --- Buttons --- */
+            .action-buttons a {
+                padding: 14px 24px;
+                margin: 10px 8px;
+                border-radius: 14px;
+                font-size: 16px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.4s ease-in-out;
+                display: inline-flex;
+                align-items: center;
+                color: white;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            }
+
+            .btn-download {
+                background: linear-gradient(90deg, #00acc1, #00796b);
+            }
+            .btn-download:hover {
+                background: linear-gradient(90deg, #00796b, #004d40);
+                box-shadow: 0 0 15px rgba(0,150,136,0.6);
+            }
+
+            .btn-home {
+                background: linear-gradient(90deg, #43a047, #00796b);
+            }
+            .btn-home:hover {
+                background: linear-gradient(90deg, #2e7d32, #004d40);
+                box-shadow: 0 0 15px rgba(67,160,71,0.6);
+            }
+
+            .btn-dicom {
+                background: linear-gradient(90deg, #00bfa5, #0097a7);
+            }
+            .btn-dicom:hover {
+                background: linear-gradient(90deg, #00897b, #006064);
+                box-shadow: 0 0 15px rgba(0,191,165,0.7);
+            }
+
+            /* --- Animations --- */
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(25px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            </style>
+
+
+</head>
+<body>
+
+    <div class="report-card" id="printableArea">
+        <h1><i class="bi bi-file-medical-fill me-2"></i>Analysis Report</h1>
+
+<div class="report-section">
+    <h5>Patient & Case Information</h5>
+    <div class="row">
+        <div class="col-md-6">
+            <p><b>Name:</b> {{ name }}</p>
+            <p><b>Age:</b> {{ age }} / <b>Gender:</b> {{ gender }}</p>
+            <p><b>Patient ID:</b> <span style="color: black; font-weight: 600;">{{ patient_id }}</span></p>
+            <p><b>Date of Scan:</b> {{ date_of_scan }}</p>
+        </div>
+
+        <div class="col-md-6">
+            <p><b>Family History:</b> {{ family_history }}</p>
+            <p><b>Head Injury Notes:</b> {{ head_injury_notes }}</p>
+            <p><b>Other Conditions:</b> {{ other_conditions }}</p>
+            <p><b>Symptoms:</b> {{ symptoms }}</p>
+        </div>
+    </div>
+</div>
+
+
+        <div class="report-section">
+            <h5>Prediction Result</h5>
+            <div class="text-center mb-3">
+                <p class="lead">Predicted Tumor Type: <span class="badge bg-danger fs-5 p-2">{{ pred_label | upper }}</span></p>
+                <p class="lead">Confidence Score: <span class="badge bg-info fs-5 p-2">{{ "%.2f"|format(confidence) if confidence }}%</span></p>
+            </div>
+            
+            <div class="mri-image-container">
+                <img src="{{ annotated_url_path }}" alt="Annotated MRI Scan">
+                <p class="text-center text-secondary fst-italic mt-2">Annotated MRI Scan for Visual Inspection</p>
+            </div>
+
+            {% if pred_label.lower() == 'glioma' %}
+            <div class="tumor-info">
+                <h5><i class="bi bi-activity me-2"></i> About Glioma:</h5>
+                <p>Gliomas are tumors that originate in the glial cells of the brain or spine. They are known for their potential to grow quickly and invade nearby tissue. Early detection and diagnosis are essential for treatment planning.</p>
+            </div>
+
+            {% elif pred_label.lower() == 'meningioma' %}
+                <div class="tumor-info">
+                    <h5><i class="bi bi-check-circle-fill me-2"></i> About Meningioma:</h5>
+                    <p>Meningiomas are tumors that arise from the meninges—the membranes that surround the brain and spinal cord. They are usually benign (non-cancerous) and slow-growing, but their location can cause symptoms as they compress brain tissue.</p>
+                </div>
+
+            {% elif pred_label.lower() == 'pituitary tumor' %}
+                <div class="tumor-info">
+                    <h5><i class="bi bi-info-circle-fill me-2"></i> About Pituitary Tumor:</h5>
+                    <p>Pituitary tumors develop in the pituitary gland, a small gland at the base of the brain. They are often benign and can cause problems by either over- or under-producing hormones, or by pressing on nearby brain structures like the optic nerves.</p>
+                </div>
+
+            {% else %}
+                <div class="tumor-info" style="border-left-color: #f1c40f;">
+                    <h5><i class="bi bi-question-circle-fill me-2"></i> No Tumor Detected / Unspecified:</h5>
+                    <p>The model did not identify a tumor with high confidence (result: {{ pred_label | upper }}). Further medical consultation is highly recommended, especially if clinical symptoms persist.</p>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="text-center action-buttons mt-4">
+            <a id="downloadPdfButton" class="btn-download">
+                <i class="bi bi-file-earmark-pdf-fill me-2"></i> Download Full Report (PDF)
+            </a>
+            <a href="{{ url_for('index') }}" class="btn-home">
+                <i class="bi bi-house-door-fill me-2"></i> Back to New Scan
+            </a>
+            <!-- Download DICOM button -->
+            <a href="{{ url_for('download_dicom', filename=dicom_filename) }}" class="btn btn-dicom">
+            Download DICOM
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Your other scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+ 
+
+
+</body>
+</html>

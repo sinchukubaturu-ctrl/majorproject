@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARRG - Automated Radiology Report Generator</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f4fdfc;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* NAVBAR */
+    .navbar-custom {
+      background: white;
+      padding: 20px 40px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .navbar-custom .nav-link {
+      font-weight: 500;
+      color: #333 !important;
+      margin-left: 20px;
+    }
+
+    .nav-btn {
+      background: #0aa184;
+      color: white !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 8%;
+    }
+
+    .hero-text h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.2;
+    }
+
+    .hero-text span {
+      color: #0aa184;
+    }
+
+    .hero-text p {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #444;
+      width: 80%;
+    }
+
+    .start-btn {
+      background: #0aa184;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      margin-top: 25px;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .start-btn:hover {
+      background: #0bbd99;
+    }
+
+    /* DOCTOR IMAGE RIGHT SIDE */
+    .hero-img img {
+      width: 430px;
+      border-radius: 20px;
+    }
+
+    /* INFO CARDS */
+    .info-card {
+      background: white;
+      padding: 18px 22px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 240px;
+      margin-bottom: 20px;
+    }
+
+    .info-card i {
+      font-size: 26px;
+      color: #0aa184;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <a class="navbar-brand fw-bold fs-4" href="#">ARRG</a>
+
+    <div class="ms-auto d-flex align-items-center">
+      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" href="#">About</a>
+      <a class="nav-link" href="#">Contact</a>
+      <a href="{{ url_for('index') }}" class="nav-btn ms-3">Start Now</a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+
+    <!-- LEFT TEXT -->
+    <div class="hero-text">
+      <h1>Get Quick <br><span>AI-Powered Diagnostics</span></h1>
+      <p>
+        Automating MRI tumor detection and generating accurate radiology reports 
+        with ARRG — a fully integrated AI health assistant.
+      </p>
+
+      <!-- Info Cards -->
+      <div class="info-card">
+        <i class="bi bi-person-vcard-fill"></i>
+        <div>
+          <b>Patient Records</b><br>
+          Smart structured entry
+        </div>
+      </div>
+
+      <div class="info-card">
+        <i class="bi bi-upload"></i>
+        <div>
+          <b>Upload MRI</b><br>
+          Supports JPG / PNG
+        </div>
+      </div>
+
+      <div class="info-card">
+        <i class="bi bi-cpu-fill"></i>
+        <div>
+          <b>AI Report</b><br>
+          Instant diagnosis
+        </div>
+      </div>
+
+      <a href="{{ url_for('index') }}" class="start-btn">
+        Start Patient Assessment →
+      </a>
+    </div>
+
+    <!-- RIGHT IMAGE -->
+    <div class="hero-img">
+      <img src="{{ url_for('static', filename='brain_icon.png') }}">
+    </div>
+
+  </section>
+
+</body>
+</html>

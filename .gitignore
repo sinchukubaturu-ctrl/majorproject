@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+venv/
+env/
+.env
+.venv/
+
+# Large Files & ML Models
+*.pt
+*.pth
+*.zip
+*.mp4
+*.pdf
+*.docx
+
+# SQLite databases
+*.sqlite
+*.db
+
+# Dynamic Content (Uploads & Outputs)
+Automated Radiology Report Generator/static/uploads/
+Automated Radiology Report Generator/static/predicted/
+Automated Radiology Report Generator/static/dicoms/
+Automated Radiology Report Generator/reports/
