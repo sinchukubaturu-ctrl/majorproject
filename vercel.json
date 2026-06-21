@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "Automated Radiology Report Generator/app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "Automated Radiology Report Generator/app.py"
+    }
+  ]
+}
