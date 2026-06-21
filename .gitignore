@@ -9,9 +9,7 @@ env/
 .env
 .venv/
 
-# Large Files & ML Models
-*.pt
-*.pth
+# Large ML Models (except bestfinal.pt)
 *.zip
 *.mp4
 *.pdf
